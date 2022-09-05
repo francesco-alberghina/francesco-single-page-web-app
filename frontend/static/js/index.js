@@ -3,6 +3,7 @@ import AccountManagement from "./views/AccountManagement.js";
 import Dashboard from "./views/Dashboard.js"; //Dashboard is the export from the module imported
 import Posts from "./views/Posts.js";
 import Settings from "./views/Settings.js";
+import ToDoList from "./views/ToDoList.js";
 
 /*
     The URL interface is used to parse, construct, normalize, and encode URLs. 
@@ -12,22 +13,16 @@ import Settings from "./views/Settings.js";
     You can then easily read the parsed components of the URL or make changes to the URL.
 */
 
-//saving the value of the url in a const called navigateTo
-const navigateTo = url => {
-    history.pushState(null, null, url); //The history.pushState() method adds an entry to the browser's session history stack. 
-    routerOne();
-};
-
-
 //---------------------------------------------------------------------------------------------ROUTERS---------------------------------------------------------------------------------------------
 
 //creation of the router function
 const routerOne = async() => {
-    //array of routes
+    //array of routes objects
     const routes = [
         {path: "/", view: Dashboard}, //definition of a new object
         {path: "/posts", view: Posts},
         {path: "/settings", view: Settings},
+        {path: "/toDoList", view: ToDoList},
         {path: "/account", view: AccountManagement}
     ];
 
@@ -58,7 +53,8 @@ const routerOne = async() => {
 };
 
 
-//second router that gets the 
+//second router for the navigation between the two forms of the login/signup view
+
 const routerTwo = async(e) => {
     //array of routes
     const routes = [
@@ -91,26 +87,28 @@ const routerTwo = async(e) => {
     match.route.view(e); //calling the switchForm by passing e
 };
 
+//saving the value of the url in a const called navigateTo
+const navigateTo = url => {
+    history.pushState(null, null, url); //The history.pushState() method adds an entry to the browser's session history stack. 
+    routerOne();
+};
+
 window.addEventListener("popstate", routerOne); //The popstate event of the Window interface is fired when the active history entry changes while the user navigates the session history
-
-function hello()
-{
-    alert("Hello");
-}
-
-
-
-window.addEventListener("popstate", routerOne);
 
 document.addEventListener("DOMContentLoaded", () => {
     document.body.addEventListener("click", e => {
-        if(e.target.matches("[data-function]")){ //checkif the sender is a tag with the "data-function" attribute
+        if(e.target.matches("[data-function]")){ //checkif the sender is a tag with the "data-function" attribute, which is one of the links on the account management view
             e.preventDefault();
             routerTwo(e);
         }
-        else if(e.target.matches("[data-link]")){
+        else if(e.target.matches("[data-link]")){ //one of the link of the main dashboard
             e.preventDefault();
             navigateTo(e.target.href);
+        }
+        else if(e.target.matches("[data-execute]")) //button of the to do list
+        {
+            e.preventDefault();
+            addTaskFunction();
         }
     });
 
@@ -144,12 +142,7 @@ function clearInputError(inputElement)
     inputElement.parentElement.querySelector(".form__input-error-message").textContent = "";
 }
 
-
-//----------------ADDING EVENTS LISTENERS----------------
-
-
-
-//TODO: switch function FIX
+//function for used to switch between the two forms of thelogin/signup page
 function switchForm(e){
     const loginForm = document.querySelector("#login");
     const createAccountForm = document.querySelector("#createAccount");
@@ -165,8 +158,9 @@ function switchForm(e){
         });
 
         setFormMessage(loginForm, "success", ""); //sets the class ofthe item to success, and the message disappears
-    }    
-    if(e.target.getAttribute("data-param") === "two")
+    }
+
+    else if(e.target.getAttribute("data-param") === "two")
     {
         loginForm.classList.remove("form--hidden");
         createAccountForm.classList.add("form--hidden");
@@ -180,6 +174,41 @@ function switchForm(e){
     }    
 };
 
+function addTaskFunction()
+{
+    document.querySelector('#push').onclick = function(){
+        if(document.querySelector('#newtask input').value.length == 0)
+            alert("Please enter a valid task");
+    
+        else{
+            let temp = document.querySelector('#newtask input').value;
+    
+            document.querySelector('#tasks').innerHTML += `
+                <div class="task">
+                    <span id="taskname">
+                        ${temp.toUpperCase()}
+                    </span>
+                    <button class="delete">
+                        <i class="far fa-trash-alt"></i>
+                    </button>
+                </div>
+            `;
+            document.querySelector('#newtask input').value = "";
+    
+            var currentTasks = document.querySelectorAll(".delete");
+    
+            for(let element of currentTasks)
+            {
+                element.onclick = function(){
+                    this.parentNode.remove();
+                }
+            }
+        }
+    }
+}
+
+
+//functions to implement later:
 /*
 document.addEventListener("DOMContentLoaded", () =>{
     const loginForm = document.querySelector("#login");

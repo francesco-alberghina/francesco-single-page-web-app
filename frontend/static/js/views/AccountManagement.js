@@ -11,7 +11,7 @@ export default class extends AbstractView{
 
         return `        
         <div class="container">
-            <form class="form__login" id="login" action="/login" method="post">
+            <form class="form__login" id="login" action="/login" method="post"> <!--the "action" attribute contains The URI of a program that processes the information submitted via the form.-->
                 <h1 class="form__title">Login</h1>
                 <div class="form__message form__message--error"></div>
                 <div class="form__input-group">
@@ -28,7 +28,7 @@ export default class extends AbstractView{
                 </p>
             </form>
 
-            <form class="form__signup form--hidden" id="createAccount">
+            <form class="form__signup form--hidden" id="createAccount" action="/signup" method="post">
                 <h1 class="form__title">Create Account</h1>
                 <div class="form__message form__message--error"></div>
                 <div class="form__input-group">
