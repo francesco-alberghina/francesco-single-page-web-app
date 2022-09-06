@@ -105,11 +105,14 @@ document.addEventListener("DOMContentLoaded", () => {
             e.preventDefault();
             navigateTo(e.target.href);
         }
+        /*
         else if(e.target.matches("[data-execute]")) //button of the to do list
         {
-            e.preventDefault();
-            addTaskFunction();
+            //commented lines to not execute the client-side
+            //e.preventDefault();
+            //addTaskFunction();
         }
+        */
     });
 
     routerOne(); //call of the main router function to navigate bewteen the various views

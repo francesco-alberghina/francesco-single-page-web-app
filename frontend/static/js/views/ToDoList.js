@@ -8,10 +8,10 @@ export default class extends AbstractView{
 
     async getHtml() {
         return `
-        <div class="container__toDoList">
+        <form class="container__toDoList" action="/addTask" method="post">
         <div id="newtask">
-            <input type="text" placeholder="Add a task...">
-            <button id="push" data-execute="addFunction">Add</buttom>
+            <input name="add__button"  id="add__button" type="text" placeholder="Add a task..."></input>
+            <button id="push" type="submit">Add</buttom>
         </div>
         <div id="tasks">
             
